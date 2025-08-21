@@ -39,14 +39,19 @@ function rendertodolist() {
 
     for (let i = 0; i < listtodo.length; i++) {
         taskList.innerHTML += `<li class="border-b py-2">${listtodo[i].task} - due: ${listtodo[i].dueDate}</li>`;   
-
 }
 }
 
 // Function to Delete all todos
 function deletaAll() {
     listtodo = [];
+    console.log("All tasks deleted");
+    
     rendertodolist();
 }
+
+// Function to filter todos
+function filter() {
+}   
     
         

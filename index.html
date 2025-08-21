@@ -34,16 +34,22 @@
         <button onclick="deletaAll()" class="bg-red-500 text-white p-2 rounded">Delete All</button>
     </section>
 
-    <!-- List of task -->
-        <section>
-            
-                <header>
-                    <h2 class="text-xl font-semibold">TAKS</h2>
-                    <h2 class="text-xl font-semibold">DUE DATE</h2>
-                    <h2 class="text-xl font-semibold">STATUS</h2>
-                    <h2 class="text-xl font-semibold">ACTION</h2>
-                </header>
+    <table>
+        <thead>
+            <tr>
+                <th class="text-xl font-semibold">Task</th>
+                <th class="text-xl font-semibold">Due Date</th>
+                <th class="text-xl font-semibold">Status</th>
+                <th class="text-xl font-semibold">Action</th>
+            </tr>
+        </thead>
+        <tbody id="task-table-body">
+            <!-- Task items will be dynamically added here -->
+        </tbody>
+    </table>
 
+    <!-- List of task -->
+        <section>            
                 <ul class=" my-4" id="task-list">
                     <li class="border-b py-2">Task 1</li>
                     <li class="border-b py-2">Task 2</li>
