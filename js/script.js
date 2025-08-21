@@ -1,24 +1,25 @@
-console.log("Hello, World!");
+console.log("Script loaded successfully");
 
-let Listtodo = [];
+let listtodo = [];
 
-// Validate the form input
 function validateForm() {
-    const taskinput = document.getElementById("task-input");
-    const duedateinput = document.getElementById("due-date-input");
+    const taskInput = document.getElementById("task-input");
+    const dueDateInput = document.getElementById("due-date-input");
 
-    if (textinput.value === "") {
+    if (taskInput.value === "") {
         alert("Please enter a task.");
         return false;
     }
+    if (dueDateInput.value === "") {
+        alert("Please enter a due date.");
+        return false;
+    } else {
+        addtodo(taskInput.value, dueDateInput.value);
 
-    // If the input is valid, you can proceed with form submission or further processing
-    console.log("Valid input:", todoText);
-    return true;
+    addTask(taskInput, dueDateInput);
 }
-function addTodo(task, dueDate) {
-    Listtodo.push(task);
-    console.log ("Task added:", task);
-    console.log (listtodo);
-    }
-}   
+
+function addtodo(task, dueDate) {        
+    listtodo.push(task);
+    console.log("task"), task);
+}
