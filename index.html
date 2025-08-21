@@ -3,14 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Todo List - Riwanda</title>
 
+    <!-- CSS External -->
     <link rel="stylesheet" href="styles.css">
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     
 </head>
-    <h1>To-do List</h1>
     
+
 <body>
+    <header>
+        <h1 style="text: -4px;xl">To-do List</h1>
+    </header>
+
+    <main>
+        <form>
+            <input type="text" id="task-input" placeholder="Add a new task..." class="border p-2 rounded">
+            <input type="date" id="due-date-input" placeholder="Add a new task..." class="border p-2 rounded">
+            <button type="button" onclick="validateForm()" ="bg-blue-500 te xt-white p-8 class="border p-5 rounded">Add</button>
+        </form>
+
+        <section>
+            <button class="bg-red-500 text-white p-2 rounded">Filter</button>
+            <button class="bg-green-500 text-white p-2 rounded">Delete all</button>
+        </section>
+
+        <section>
+            <h2 class="text-2xl font-semibold">Task</h2>
+        </section>
+    </main>
     
 </body>
 </html>
