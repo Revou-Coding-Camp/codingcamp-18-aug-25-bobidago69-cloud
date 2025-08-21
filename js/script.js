@@ -1,7 +1,8 @@
-console.log ("Hello, World!");
+console.log("Hello, World!");
 
 let Listtodo = [];
 
+// Validate the form input
 function validateForm() {
     const taskinput = document.getElementById("task-input");
     const duedateinput = document.getElementById("due-date-input");

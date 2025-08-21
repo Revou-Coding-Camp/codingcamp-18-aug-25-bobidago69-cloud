@@ -6,34 +6,51 @@
     <title>Todo List - Riwanda</title>
 
     <!-- CSS External -->
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css\style.css">
 
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Js External -->
+     <script src="js\script.js"></script>
     
 </head>
     
-
 <body>
     <header>
-        <h1 style="text: -4px;xl">To-do List</h1>
+        <h1 class="text-4xl font-bold">To-do List</h1>
     </header>
-
+    <!-- Main Content -->
     <main>
         <form>
             <input type="text" id="task-input" placeholder="Add a new task..." class="border p-2 rounded">
             <input type="date" id="due-date-input" placeholder="Add a new task..." class="border p-2 rounded">
-            <button type="button" onclick="validateForm()" ="bg-blue-500 te xt-white p-8 class="border p-5 rounded">Add</button>
+            <button type="button" onclick="validateForm()" class =bg-blue-500 text-white p-[10px] rounded">Add</button>
         </form>
 
+    <!-- Action Button -->
+    <section>
+        <button class="bg-blue-500 text-white p-2 rounded" onclick="filter()">Filter</button>
+        <button onclick="deletaAll()" class="bg-red-500 text-white p-2 rounded">Delete All</button>
+    </section>
+
+    <!-- List of task -->
         <section>
-            <button class="bg-red-500 text-white p-2 rounded">Filter</button>
-            <button class="bg-green-500 text-white p-2 rounded">Delete all</button>
+                <header>
+                    <h2 class="text-2xl font-semibold">Tasks</h2>
+                </header>
+
+                <ul class=" my-4" id="task-list">
+                    <li class="border-b py-2">Task 1</li>
+                    <li class="border-b py-2">Task 2</li>
+                    <li class="border-b py-2">Task 3</li>
+                    <li class="border-b py-2">Task 4</li>
+                </ul>
         </section>
 
-        <section>
-            <h2 class="text-2xl font-semibold">Task</h2>
-        </section>
+    <footer>
+        <span>&copy; 2025 Riwanda. All right reserved</span>
+    </footer>
     </main>
     
 </body>
