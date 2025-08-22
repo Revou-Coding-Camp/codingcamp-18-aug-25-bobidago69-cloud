@@ -1,132 +1,161 @@
-console.log("Script loaded successfully");
+const todoForm = document.getElementById('todoForm');
+const todoTableBody = document.getElementById('todoTableBody');
+const deleteAllBtn = document.getElementById('deleteAllBtn');
 
-const todoForm = document.getElementById("todo-form");
-const todotablebody = document.getElementById("todos-list-body");
-const deleteAllButton = document.getElementById("delete-all-button");
-
-let todos = JSON.parse(localStorage.getItem("todos")) || [];
-let currentFilter = "pending";
+let todos = JSON.parse(localStorage.getItem('todos')) || []; 
+let currentFilter = 'Pending'; 
 
 function saveTodos() {
-    localStorage.setItem("todos", JSON.stringify(todos));
+  localStorage.setItem('todos', JSON.stringify(todos));
 }
 
-function rendertable (filterstatus=currentfilter) {
-    todotablebody.innerHTML = "";
-    let hasdata = false;
+function renderTable(filterStatus = currentFilter) {
+  todoTableBody.innerHTML = '';
+  let hasData = false; 
 
-    const sortedTodos = todos.slice().reverse();
+  const sortedTodos = todos.slice().reverse();
 
-    sortedTodos.forEach((todo, index) => {
-        if (filterstatus && filterstatus !== "all" && todo.status !== filterstatus) return;
-        hasdata = true; 
-        const tr=document.createElement("tr");
-        tr.innerHTML= `
-            <td class=px-4 py-2 text-left">${todo.task}</td>
-            <td class="px-4 py-2 text-left">${todo.dueDate}</td>
-            <td class="px-4 py-2">
-                <span class="px-2 py-1 rounded-full text-xs font-semibold ${todo.status === "Pending" ? "bg-green-200 text-green-800" : "bg-yellow-200 text-yellow-800"}">${todo.status}</span>
-            </td>
-            <td class="px-4 py-2 flex gap-2">
-                <button class="edit px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600" tittle="edit"><i class="bi bi-pencil-square"></i></button>
-                <button class="check px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600" tittle="mark-completed"><i class="bi bi-check-fill"></i></button>
-                <button class="delete px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600" tittle="delete"><i class="bi bi-trash"></i>onclick="deleteTodo(${index})">Delete</button>
-            </td>
-            `;
-        tr.querySelector(".edit").addEventListener("click",() => {
-            const oldtask = todo.task;
-            const olddate = todo.date;
+  sortedTodos.forEach((todo, index) => {
+    if (filterStatus && filterStatus !== 'All' && todo.status !== filterStatus) return;
 
-            tr.cells[0].innerHTML = `
-                <input type="text" value="${oldtask}"
-                    class="edit-task w-full p-2 border rounded-lg ring-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 text-gray-800 border-blue-300 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600 transition-all duration-200">
-            `;
-            tr.cells[1].innerHTML = `
-                <input type="date" value="${olddate}"
-                    class="edit-date w-full p-2 border rounded-lg ring-2 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-blue-50 text-gray-800 border-blue-300 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600 transition-all duration-200">
-            `;
-            tr.cells[2].innerHTML = `
-                <div class="flex gap-2">
-                    <button class="save px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600" title="save">Save</button>
-                    <button class="cancel px-3 py-1 bg-gray-500 text-white rounded hover:bg-gray-600" title="cancel">Cancel</button>
-                </div>
-            `;
-            tr.querySelector(".save").addEventListener("click", () => {
-                const newTask = tr.querySelector(".edit-task").value.trim();
-                const newDate = tr.querySelector(".edit-date").value;
-                if (newTask && newDate) {
-                    todo.task = newTask;
-                    todo.dueDate = newDate;
-                    todo.status = "Pending"; // Reset status to Pending after edit
-                    saveTodos();
-                    rendertable();
-                } else {
-                    alert("Please fill in both fields.");
-                }
-            });
-            tr.querySelector(".cancel").addEventListener("click", () => {
-                renderTable();
-            });
-        });
-            tr.querySelector(".check").addEventListener("click", () => {
-                todo.status = "Completed";
-                saveTodos();
-                renderTable();
-        });
-            tr.querySelector(".delete").addEventListener("click", () => {
-                if (confirm("Are you sure you want to delete this todo?")) {
-                    todos.splice(index, 1);
-                    saveTodos();
-                    renderTable();
-                }
-            });
+    hasData = true; 
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="px-2 py-2 w-[400px]">${todo.task}</td>
+      <td class="px-2 py-2">${todo.date}</td>
+      <td class="px-2 py-2">
+        <span class="px-2 py-1 text-xs font-semibold rounded-full 
+                    ${todo.status === 'Pending' 
+                        ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-500 dark:text-yellow-100' 
+                        : 'bg-green-100 text-green-800 dark:bg-green-500 dark:text-green-100'}">
+          ${todo.status}
+        </span>
+      </td>
+      <td class="px-2 py-2 flex gap-2">
+        <button class="edit px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600" title="edit"><i class="bi bi-pencil-square"></i></button>
+        <button class="check px-2 py-1 bg-green-500 text-white rounded hover:bg-green-600" title="mark-complete"><i class="bi bi-check-circle-fill"></i></button>
+        <button class="delete px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600" title="delete"><i class="bi bi-trash"></i></button>
+      </td>
+    `;
 
-            todotablebody.appendChild(tr);
-        });
-        if (!hasdata) {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `<td colspan="4" class="text-center text-gray-500">No todos found</td>`;
-            todotablebody.appendChild(tr);
-        }
-    }
-    todoForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const taskinput = todoForm.task;
-        const dateinput = todoForm.date;
+    tr.querySelector('.edit').addEventListener('click', () => {
+      const oldTask = todo.task;
+      const oldDate = todo.date;
 
-        let valid = true;
+      tr.cells[0].innerHTML = `
+        <input type="text" value="${oldTask}" 
+          class="edit-task w-full px-2 py-1 border border-gray-300 dark:border-gray-600 
+                rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none 
+                dark:bg-gray-700 dark:text-gray-100">
+      `;
+      tr.cells[1].innerHTML = `
+        <input type="date" value="${oldDate}" 
+          class="edit-date w-full px-2 py-1 border border-gray-300 dark:border-gray-600 
+                rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none 
+                dark:bg-gray-700 dark:text-gray-100">
+      `;
 
-        taskinput.classList.remove("border-red-500");
-        dateinput.classList.remove("border-red-500");
+      tr.cells[3].innerHTML = `
+        <div class="flex gap-2">
+          <button class="save px-3 py-1 bg-green-500 text-white text-sm rounded-lg 
+                        hover:bg-green-600 focus:outline-none focus:ring-2 
+                        focus:ring-green-400">Simpan</button>
+          <button class="cancel px-3 py-1 bg-gray-400 text-white text-sm rounded-lg 
+                          hover:bg-gray-500 focus:outline-none focus:ring-2 
+                          focus:ring-gray-300">Batal</button>
+        </div>
+      `;
 
-        if (taskinput.value.trim() === "") {
-            taskinput.classList.add("border-red-500");
-            valid = false;
-        }
-        if (dateinput.value === "") {
-            dateinput.classList.add("border-red-500");
-            valid = false;
+
+      tr.querySelector('.save').addEventListener('click', () => {
+        const newTask = tr.querySelector('.edit-task').value.trim();
+        const newDate = tr.querySelector('.edit-date').value;
+        if (newTask && newDate) {
+          todo.task = newTask;
+          todo.date = newDate;
+          todo.status = 'Pending'; 
+          saveTodos();
+          renderTable();
+
+          showAlert('✅ Task berhasil diperbarui!', 'success');
         } else {
-            dateinput.classList.remove("border-red-500");
+          alert('Task dan tanggal tidak boleh kosong!');
         }
-        if (valid) {
-            todos.push({
-                task: taskinput.value.trim(),
-                dueDate: dateinput.value,
-                status: "Pending"
-            });
-            saveTodos();
-            todoForm.reset();
+      });
 
-            taskinput.classList.remove("border-red-500");
-            dateinput.classList.remove("border-red-500");
-
-            rendertable();
-            showAlert("Todo added successfully!", "success");
-        }
+      tr.querySelector('.cancel').addEventListener('click', () => {
+        renderTable(); 
+      });
     });
 
-    todoForm.task.addEventListener('input', e => {
+    tr.querySelector('.check').addEventListener('click', () => {
+      todo.status = 'Completed';
+      saveTodos();
+      renderTable();
+    });
+
+    tr.querySelector('.delete').addEventListener('click', () => {
+      if (confirm('Apakah kamu yakin ingin menghapus task ini?')) {
+
+        const originalIndex = todos.findIndex(t => t === todo);
+        todos.splice(originalIndex, 1);
+        saveTodos();
+        renderTable();
+
+        showAlert('✅ Task berhasil dihapus!', 'success');
+      }
+    });
+
+    todoTableBody.appendChild(tr);
+  });
+
+  if (!hasData) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="4" class="text-lg text-center text-gray-300">No task found</td>`;
+    todoTableBody.appendChild(tr);
+  }
+}
+
+todoForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const taskInput = todoForm.task;
+    const dateInput = todoForm.tanggal;
+
+    let valid = true;
+
+    taskInput.classList.remove("ring-red-500", "ring-green-500");
+    dateInput.classList.remove("ring-red-500", "ring-green-500");
+
+    if (taskInput.value.trim() === "") {
+        taskInput.classList.add("ring-red-500");
+        valid = false;
+    } else {
+        taskInput.classList.add("ring-green-500");
+    }
+
+    if (dateInput.value === "") {
+        dateInput.classList.add("ring-red-500");
+        valid = false;
+    } else {
+        dateInput.classList.add("ring-green-500");
+    }
+
+    if (valid) {
+        todos.push({ task: taskInput.value.trim(), date: dateInput.value, status: 'Pending' });
+        saveTodos();
+        todoForm.reset();
+
+        taskInput.classList.remove("ring-green-500", "ring-red-500");
+        dateInput.classList.remove("ring-green-500", "ring-red-500");
+
+        renderTable();
+        showAlert('✅ Task berhasil ditambahkan!', 'success');
+    }
+});
+
+
+todoForm.task.addEventListener('input', e => {
     const input = e.target;
     input.classList.remove("ring-red-500", "ring-green-500");
     if (!input.value.trim()) input.classList.add("ring-red-500");
@@ -161,11 +190,11 @@ function showAlert(message, type = 'success') {
     }, 3000);
 }
 
-deleteAllButton.addEventListener('click', () => {
+deleteAllBtn.addEventListener('click', () => {
   if (confirm('Apakah kamu yakin ingin menghapus semua task?')) {
     todos = [];
     saveTodos();
-    rendertable();
+    renderTable();
 
     showAlert('✅ Semua task berhasil dihapus!', 'success');
   }
@@ -195,11 +224,4 @@ window.addEventListener('click', (e) => {
     }
 });
 
-rendertable();
-
-    
-
-    
-
-
-                
+renderTable();
