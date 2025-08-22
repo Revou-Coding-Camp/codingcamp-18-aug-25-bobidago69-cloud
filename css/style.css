@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
-body{
-    justify-items : center;
-    height:100vh;
-    align-content:center;
 
-}
 
 footer{
     position: fixed;
@@ -16,12 +11,3 @@ footer{
     padding: 10px;
 }
 
-table, th, td {
-    border: 3px solid rgb(115, 90, 90);
-    border-radius: 10px;
-    border-spacing: 5px;
-    border-collapse:separate;
-    padding: 10px;
-    text-align: center;
-
-}
